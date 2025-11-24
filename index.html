@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote App</title>
+    <title>Programming Quote</title>
     <style>
-        /* Basic Reset */
+        /* Reset */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,51 +13,84 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body, html {
+        html, body {
             height: 100%;
+        }
+
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-color: #1e1e2f; /* New background color */
             color: #fff;
         }
 
         .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             width: 90%;
             max-width: 800px;
         }
 
-        .quote {
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            font-size: 1.5rem;
-            line-height: 1.6;
-            width: 75vw; /* 75% of viewport width */
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #ffcc00;
+        }
+
+        .quote-box {
+            background: rgba(50, 50, 70, 0.9);
+            padding: 30px 20px;
+            border-radius: 0px; /* square corners */
+            margin-bottom: 20px;
+            width: 75vw;
             transition: all 0.3s ease;
+        }
+
+        .quote-text {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .quote-author {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #ffd700;
         }
 
         button {
             padding: 12px 30px;
             font-size: 1.2rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 0px; /* square corners */
             cursor: pointer;
-            background-color: #ff6b6b;
+            background-color: #00b894; /* new button color */
             color: #fff;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button:hover {
-            background-color: #ff4757;
+            background-color: #019875;
             transform: scale(1.05);
         }
 
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
         @media (max-width: 600px) {
-            .quote {
+            .quote-text {
                 font-size: 1.2rem;
+            }
+
+            .quote-author {
+                font-size: 1rem;
             }
 
             button {
@@ -69,12 +102,20 @@
 </head>
 <body>
     <div class="container">
-        <div class="quote" id="quote">Click the button to get a quote!</div>
+        <h1>Programming Quote</h1>
+        <div class="quote-box">
+            <div class="quote-text" id="quote">Click the button to get a quote!</div>
+            <div class="quote-author" id="author"></div>
+        </div>
         <button id="fetchQuote">Get Quote</button>
+        <footer id="footer">
+            Subscribe to our newsletter to get daily programming inspiration!
+        </footer>
     </div>
 
     <script>
         const quoteDiv = document.getElementById('quote');
+        const authorDiv = document.getElementById('author');
         const button = document.getElementById('fetchQuote');
 
         async function fetchQuote() {
@@ -83,8 +124,10 @@
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
                 quoteDiv.textContent = data.quote || "No quote found.";
+                authorDiv.textContent = data.author ? `— ${data.author}` : "— Unknown";
             } catch (error) {
                 quoteDiv.textContent = "Failed to fetch quote. Please try again.";
+                authorDiv.textContent = "";
                 console.error(error);
             }
         }
